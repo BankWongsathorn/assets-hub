@@ -24,7 +24,6 @@ Start Docker:
 $ docker compose up -d
 ```
 
-
 Push table to database:
 
 ```sh
@@ -35,6 +34,12 @@ Insert data to database:
 
 ```sh
 $ bun db:seed
+```
+
+Show data table
+
+```sh
+$ bun db:std
 ```
 
 Stop Docker:
