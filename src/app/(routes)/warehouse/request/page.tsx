@@ -17,7 +17,11 @@ const prepareFetchData = async () => {
 
   if (!res.data) return [];
 
-  return res.data.map((item: any) => ({
+  const assignmentType = res.data.filter(
+    (item: any) => item.type === "Assignment"
+  );
+
+  return assignmentType.map((item: any) => ({
     id: item.id,
     user: item.user?.email,
     serial: item.asset?.serial_number,

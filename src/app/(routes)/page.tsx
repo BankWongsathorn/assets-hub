@@ -37,7 +37,7 @@ export default async function Home() {
     <section>
       <div className="grid grid-cols-4 gap-8 mb-8">
         <Card>
-          <CardOverview title="Employee" Icon={User} value={employee} />
+          <CardOverview title="User" Icon={User} value={employee} />
         </Card>
         <Card>
           <CardOverview title="Available" Icon={Package} value={asset} />

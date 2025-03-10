@@ -4,21 +4,63 @@ import { AssetStatus, AuditLogStatus, AuditLogType } from "@prisma/client";
 
 export async function onSubmit(data: any, status: string) {
   if (!status) return;
+  let update_asset = {};
 
   try {
     if (status === AuditLogStatus.Approved) {
       if (data.type === AuditLogType.Assignment) {
-        await handleAssign(data);
+        update_asset = {
+          status: AssetStatus.Assigned,
+          user_id: data.user_id,
+        };
       } else if (data.type === AuditLogType.Return) {
-        await handleReturn(data);
+        update_asset = {
+          status: AssetStatus.Available,
+          user_id: null,
+        };
       }
-    } else if (status === AuditLogStatus.InProgress) {
-      await handleInProgress(data);
-    } else if (status === AuditLogStatus.Completed) {
-      await handleCompleted(data);
-    } else if (status === AuditLogStatus.Cancelled) {
-      await handleCancel(data);
     }
+
+    if (status === AuditLogStatus.InProgress) {
+      update_asset = {
+        status: AssetStatus.Maintenance,
+      };
+    }
+
+    if (status === AuditLogStatus.Completed) {
+      update_asset = {
+        status: AssetStatus.Assigned,
+      };
+    }
+
+    if (status === AuditLogStatus.Cancelled) {
+      update_asset = {
+        status: AssetStatus.Disposed,
+      };
+    }
+
+    if (status === AuditLogStatus.Rejected) {
+      if (data.type === AuditLogType.Assignment) {
+        update_asset = {
+          status: AssetStatus.Available,
+        };
+      } else if (
+        data.type === AuditLogType.Return ||
+        data.type === AuditLogType.Maintenance
+      ) {
+        update_asset = {
+          status: AssetStatus.Assigned,
+        };
+      }
+    }
+
+    const res = await fetchData({
+      method: "PUT",
+      path: `/asset/status/${data.asset_id}`,
+      body: update_asset,
+    });
+
+    if (res.status === "error") throw new Error(res.message);
 
     const audit = await fetchData({
       method: "PUT",
@@ -44,66 +86,4 @@ export async function onSubmit(data: any, status: string) {
       description: `${error}`,
     });
   }
-}
-
-async function handleAssign(data: any) {
-  const res = await fetchData({
-    method: "PUT",
-    path: `/asset/status/${data.asset_id}`,
-    body: {
-      status: AssetStatus.Assigned,
-      user_id: data.user_id,
-    },
-  });
-
-  if (res.status === "error") throw new Error(res.message);
-}
-
-async function handleReturn(data: any) {
-  const res = await fetchData({
-    method: "PUT",
-    path: `/asset/status/${data.asset_id}`,
-    body: {
-      status: AssetStatus.Available,
-      user_id: null,
-    },
-  });
-
-  if (res.status === "error") throw new Error(res.message);
-}
-
-async function handleInProgress(data: any) {
-  const res = await fetchData({
-    method: "PUT",
-    path: `/asset/status/${data.asset_id}`,
-    body: {
-      status: AssetStatus.Maintenance,
-    },
-  });
-
-  if (res.status === "error") throw new Error(res.message);
-}
-
-async function handleCompleted(data: any) {
-  const res = await fetchData({
-    method: "PUT",
-    path: `/asset/status/${data.asset_id}`,
-    body: {
-      status: AssetStatus.Assigned,
-    },
-  });
-
-  if (res.status === "error") throw new Error(res.message);
-}
-
-async function handleCancel(data: any) {
-  const res = await fetchData({
-    method: "PUT",
-    path: `/asset/status/${data.asset_id}`,
-    body: {
-      status: AssetStatus.Disposed,
-    },
-  });
-
-  if (res.status === "error") throw new Error(res.message);
 }

@@ -15,7 +15,8 @@ import { toast } from "@/hooks/use-toast";
 const prepareFetchUser = async () => {
   const res = await fetchData({ method: "GET", path: "/user" });
   if (!res.data) return [];
-  return res.data.map((item: any) => {
+  const activeUsers = res.data.filter((item: any) => item.status === "Active");
+  return activeUsers.map((item: any) => {
     return { value: item.id, label: item.email };
   });
 };

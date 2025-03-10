@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "@/hooks/use-toast";
 
 export default function LoginForm({
   className,
@@ -26,7 +27,11 @@ export default function LoginForm({
       });
 
       if (result?.error) {
-        alert(result.error);
+        return toast({
+          title: "Failed",
+          description: "Invalid email or password",
+          variant: "destructive",
+        });
       }
 
       return router.push("/");

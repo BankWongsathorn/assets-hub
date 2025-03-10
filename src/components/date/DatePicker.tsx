@@ -19,6 +19,7 @@ export default function DatePicker({ value, change, props }: DatePickerType) {
         onChange={(date) => {
           change(date?.toString());
         }}
+        dateFormat="dd/MM/yyyy"
       />
     </Button>
   );

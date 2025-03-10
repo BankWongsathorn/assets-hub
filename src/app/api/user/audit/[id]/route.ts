@@ -16,6 +16,9 @@ export async function GET(
         reported_by: true,
         handled_by: true,
       },
+      orderBy: {
+        created_at: "desc",
+      },
     });
 
     return SendHandler(result);

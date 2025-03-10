@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { handleCancel } from "./_actions";
 import { AuditLogStatus as s } from "@prisma/client";
 import TextColor from "@/components/table/TextColor";
+import { useState } from "react";
 
 export const Columns: ColumnDef<any>[] = [
   {
@@ -64,6 +65,7 @@ export const Columns: ColumnDef<any>[] = [
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;
+      const [disabled, setDisabled] = useState(false);
 
       return data.status === s.Pending ? (
         <Dialog>
@@ -78,7 +80,14 @@ export const Columns: ColumnDef<any>[] = [
             </DialogHeader>
             <DialogDescription></DialogDescription>
             <DialogFooter>
-              <Button onClick={() => handleCancel(data.id)} variant="default">
+              <Button
+                onClick={() => {
+                  setDisabled(true);
+                  handleCancel(data.id);
+                }}
+                variant="default"
+                disabled={disabled}
+              >
                 Yes
               </Button>
               <DialogClose asChild>

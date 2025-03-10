@@ -60,12 +60,13 @@ export const Columns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const data = row.original;
       const [status, setStatus] = useState("");
+      const [disabled, setDisabled] = useState(false);
 
       return (
         <Dialog>
           <DialogTrigger asChild>
             <button>
-              <LucideEdit className="h-4 w-4" />
+              {data.status === "Assigned" && <LucideEdit className="h-4 w-4" />}
             </button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
@@ -86,9 +87,13 @@ export const Columns: ColumnDef<any>[] = [
                 </SelectContent>
               </Select>
               <Button
-                onClick={() => handleSubmit(data, status)}
+                onClick={() => {
+                  setDisabled(true);
+                  handleSubmit(data, status);
+                }}
                 variant={status ? "default" : "secondary"}
                 className={status ? "" : "cursor-not-allowed"}
+                disabled={disabled}
               >
                 Submit
               </Button>

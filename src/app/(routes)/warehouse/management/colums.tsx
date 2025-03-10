@@ -70,6 +70,7 @@ export const ManagementColumns: ColumnDef<any>[] = [
     cell: ({ row }) => {
       const data = row.original;
       const [status, setStatus] = useState("");
+      const [disabled, setDisabled] = useState(false);
 
       return (
         <Dialog>
@@ -110,9 +111,13 @@ export const ManagementColumns: ColumnDef<any>[] = [
                 </SelectContent>
               </Select>
               <Button
-                onClick={() => onSubmit(data, status)}
+                onClick={() => {
+                  setDisabled(true);
+                  onSubmit(data, status);
+                }}
                 variant={status ? "default" : "secondary"}
                 className={status ? "" : "cursor-not-allowed"}
+                disabled={disabled}
               >
                 Submit
               </Button>

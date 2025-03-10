@@ -5,7 +5,13 @@ import { AuditLogStatus } from "@prisma/client";
 export default function TextColor({ status }: { status: any }) {
   let color = "";
 
-  if ([AuditLogStatus.Pending, AssetStatus.Maintenance].includes(status)) {
+  if (
+    [
+      AuditLogStatus.Pending,
+      AssetStatus.Maintenance,
+      AssetStatus.Waiting,
+    ].includes(status)
+  ) {
     color = "bg-yellow-100 text-yellow-700";
   } else if (
     [

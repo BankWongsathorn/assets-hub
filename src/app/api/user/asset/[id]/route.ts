@@ -10,6 +10,9 @@ export async function GET(
       where: {
         user_id: (await params).id,
       },
+      orderBy: {
+        created_at: "desc",
+      },
     });
 
     return SendHandler(result);

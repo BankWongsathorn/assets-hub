@@ -11,6 +11,9 @@ export async function GET() {
     omit: {
       password: true,
     },
+    orderBy: {
+      created_at: "desc",
+    },
   });
 
   return SendHandler(result);

@@ -59,6 +59,7 @@ model User {
 
 enum AssetStatus {
   Available // พร้อมใช้งาน
+  Waiting // รอการอนุมัติ
   Assigned // ถูกมอบหมาย
   Maintenance // ซ่อมบำรุง
   Disposed // ถูกกำจัด
