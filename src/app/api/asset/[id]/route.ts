@@ -35,6 +35,7 @@ export async function PUT(
         id: (await params).id,
       },
       data: {
+        name: body.name,
         warranty_expiry: body.warranty_expiry,
         status: body.status,
       },

@@ -14,6 +14,9 @@ export const UserSession = async (dept?: string) => {
     where: {
       email: session.user?.email ?? undefined,
     },
+    include: {
+      department: true,
+    },
   });
 
   if (!user) throw new Error("Failed to get user");

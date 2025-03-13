@@ -54,6 +54,7 @@ export default function FormAsset({
       method: "PUT",
       path: `/asset/${coreData.id}`,
       body: {
+        name: formData.name,
         warranty_expiry: formData.warrantyexpiry,
         status: formData.status,
       },

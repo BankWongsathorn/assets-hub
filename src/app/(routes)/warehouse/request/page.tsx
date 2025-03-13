@@ -11,8 +11,11 @@ const prepareFetchData = async () => {
 
   if (!user) return [];
 
+  let path =
+    user.department.name === "Admin" ? "/audit" : `/user/audit/${user.id}`;
+
   const res = await fetchData({
-    path: `/user/audit/${user.id}`,
+    path,
   });
 
   if (!res.data) return [];

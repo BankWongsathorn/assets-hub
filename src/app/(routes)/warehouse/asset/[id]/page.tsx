@@ -34,5 +34,5 @@ const header = {
   title: "Asset Detail",
   href: "/warehouse/asset",
   dept: ["Information Technology"],
-  disabled: ["lot", "serial", "name", "purchasedate", "status"],
+  disabled: ["lot", "serial", "purchasedate", "status"],
 };
