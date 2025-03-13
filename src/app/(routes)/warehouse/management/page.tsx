@@ -3,6 +3,7 @@ import { ManagementColumns as columns } from "./colums";
 import { fetchData } from "@/utils/FetchData";
 import DeptTable from "@/components/table/DeptTable";
 import { AuditLogStatus } from "@prisma/client";
+import { formatDate } from "@/utils/Date";
 
 const prepareFetchData = async () => {
   const res = await fetchData({
@@ -24,6 +25,8 @@ const prepareFetchData = async () => {
       reported_by: item.reported_by?.email,
       asset_id: item.asset_id,
       user_id: item.user_id,
+      created_at: formatDate(item.created_at),
+      updated_at: formatDate(item.updated_at),
     };
   });
 };

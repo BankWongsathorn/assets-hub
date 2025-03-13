@@ -26,6 +26,7 @@ const prepareFetchData = async () => {
         : "-",
       status: item.status,
       user_id: item.user_id,
+      updated_at: formatDate(item.updated_at),
     };
   });
 };

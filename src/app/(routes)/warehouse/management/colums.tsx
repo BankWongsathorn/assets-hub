@@ -66,6 +66,18 @@ export const ManagementColumns: ColumnDef<any>[] = [
     ),
   },
   {
+    accessorKey: "created_at",
+    header: ({ column }) => (
+      <TableColumnHeader column={column} title="Created At" />
+    ),
+  },
+  {
+    accessorKey: "updated_at",
+    header: ({ column }) => (
+      <TableColumnHeader column={column} title="Updated At" />
+    ),
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
       const data = row.original;

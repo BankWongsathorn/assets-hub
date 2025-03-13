@@ -5,6 +5,7 @@ import Link from "next/link";
 import { fetchData } from "@/utils/FetchData";
 import DeptTable from "@/components/table/DeptTable";
 import { UserSession } from "@/utils/auth/UserSession";
+import { formatDate } from "@/utils/Date";
 
 const prepareFetchData = async () => {
   const user = await UserSession();
@@ -33,6 +34,8 @@ const prepareFetchData = async () => {
     status: item.status,
     reported_by: item.reported_by?.email,
     handled_by: item.handled_by?.email || "-",
+    created_at: formatDate(item.created_at),
+    updated_at: formatDate(item.updated_at),
   }));
 };
 

@@ -21,6 +21,7 @@ const prepareFetchData = async () => {
       warrantyexpiry: item.warranty_expiry && formatDate(item.warranty_expiry),
       status: item.status,
       user: item.user?.email || "",
+      updated_at: formatDate(item.updated_at),
     };
   });
 };

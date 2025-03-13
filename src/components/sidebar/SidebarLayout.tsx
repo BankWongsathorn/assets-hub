@@ -30,7 +30,7 @@ export default function SidebarLayout({
 
   return (
     <SidebarProv>
-      <Sidebar className="shadow-2xl">
+      <Sidebar className="shadow-2xl bg-background">
         <SidebarHeader className="text-2xl font-semibold select-none">
           <Link href="/">Assets Hub</Link>
         </SidebarHeader>
