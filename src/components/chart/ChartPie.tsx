@@ -1,72 +1,90 @@
 "use client";
-
-import * as React from "react";
-import { TrendingUp } from "lucide-react";
 import { Label, Pie, PieChart } from "recharts";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
+import { useEffect, useState } from "react";
+import { fetchData } from "@/utils/FetchData";
+
+const chart = [
+  { dept: "Admin", fill: "var(--color-admin)", amount: 0 },
+  { dept: "Human resource", fill: "var(--color-hr)", amount: 0 },
+  { dept: "Account", fill: "var(--color-acc)", amount: 0 },
+  { dept: "Information Technology", fill: "var(--color-it)", amount: 0 },
+  { dept: "General", fill: "var(--color-general)", amount: 0 },
 ];
 
 const chartConfig = {
   visitors: {
     label: "Visitors",
   },
-  chrome: {
-    label: "Chrome",
+  admin: {
+    label: "Admin",
     color: "hsl(var(--chart-1))",
   },
-  safari: {
-    label: "Safari",
+  hr: {
+    label: "Human resource",
     color: "hsl(var(--chart-2))",
   },
-  firefox: {
-    label: "Firefox",
+  acc: {
+    label: "Account",
     color: "hsl(var(--chart-3))",
   },
-  edge: {
-    label: "Edge",
+  it: {
+    label: "Information Technology",
     color: "hsl(var(--chart-4))",
   },
-  other: {
-    label: "Other",
+  general: {
+    label: "General",
     color: "hsl(var(--chart-5))",
   },
 } satisfies ChartConfig;
 
+const prepareFetchData = async () => {
+  const res = await fetchData({ path: "/user/active" });
+
+  if (res.status === "error") {
+    return [];
+  }
+
+  return res.data;
+};
+
 export default function ChartPie() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
+  const [chartData, setChartData] = useState<
+    { amount: number; dept: string; fill: string }[]
+  >([]);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    prepareFetchData().then((data) => {
+      const getChart = chart.map((item) => {
+        const c = (item.amount = data.filter(
+          (user: { department: { name: string } }) =>
+            user.department.name === item.dept
+        ).length);
+
+        return { ...item, amount: c };
+      });
+
+      setChartData(getChart);
+      setTotal(data.length);
+    });
   }, []);
 
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Donut with Text</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>User Department</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square max-h-[500px]"
         >
           <PieChart>
             <ChartTooltip
@@ -75,9 +93,9 @@ export default function ChartPie() {
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
-              innerRadius={60}
+              dataKey="amount"
+              nameKey="dept"
+              innerRadius={100}
               strokeWidth={5}
             >
               <Label
@@ -95,14 +113,14 @@ export default function ChartPie() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {total}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Active
                         </tspan>
                       </text>
                     );
@@ -113,14 +131,6 @@ export default function ChartPie() {
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
     </Card>
   );
 }

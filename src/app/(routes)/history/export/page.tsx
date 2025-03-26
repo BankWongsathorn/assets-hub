@@ -80,8 +80,8 @@ export default function Export() {
           asset: item.asset.name,
           type: item.type,
           status: item.status,
-          reported_by: item.reported_by.email,
-          handled_by: item.handled_by.email,
+          reported_by: item.reported_by.email || "-",
+          handled_by: item.handled_by?.email || "-",
           created_at: formatDate(item.created_at),
           updated_at: formatDate(item.updated_at),
         };
@@ -94,8 +94,8 @@ export default function Export() {
         item.asset.name,
         item.type,
         item.status,
-        item.reported_by.email,
-        item.handled_by.email,
+        item.reported_by?.email || "-",
+        item.handled_by?.email || "-",
         formatDate(item.created_at),
         formatDate(item.updated_at),
       ])

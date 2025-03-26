@@ -45,7 +45,7 @@ export default async function History() {
 
 const header = {
   title: "History",
-  dept: ["Accounting"],
+  dept: ["Account"],
   options: {
     search: ["user"],
   },
