@@ -69,10 +69,10 @@ export default [
     dept: ["Admin", "Account"],
   },
   // Setting
-  {
-    title: "Setting",
-    url: "/setting",
-    icon: Settings,
-    dept: ["Admin"],
-  },
+  // {
+  //   title: "Setting",
+  //   url: "/setting",
+  //   icon: Settings,
+  //   dept: ["Admin"],
+  // },
 ];
